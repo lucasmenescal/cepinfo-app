@@ -48,70 +48,107 @@
       <div v-else class="input-container">
         <div class="input-row">
           <label for="cep">CEP:</label>
-          <input type="text">
+          <input v-model="enderecoJsonSave.cep" type="text" required>
         </div>
         <div class="input-row">
           <label for="logradouro">Logradouro:</label>
-          <input type="text">
+          <input v-model="enderecoJsonSave.logradouro" type="text" required>
         </div>
         <div class="input-row">
           <label for="complemento">Complemento:</label>
-          <input type="text">
+          <input v-model="enderecoJsonSave.complemento" type="text">
         </div>
         <div class="input-row">
           <label for="bairro">Bairro:</label>
-          <input type="text">
+          <input v-model="enderecoJsonSave.bairro" type="text">
         </div>
         <div class="input-row">
           <label for="localidade">Localidade:</label>
-          <input type="text">
+          <input v-model="enderecoJsonSave.localidade" type="text">
         </div>
         <div class="input-row">
           <label for="uf">UF:</label>
-          <input type="text">
+          <input v-model="enderecoJsonSave.uf" type="text">
         </div>
         <div class="input-row">
           <label for="ibge">IBGE:</label>
-          <input type="text">
+          <input v-model="enderecoJsonSave.ibge" type="text">
         </div>
         <div class="input-row">
           <label for="gia">GIA:</label>
-          <input type="text">
+          <input v-model="enderecoJsonSave.gia" type="text">
         </div>
         <div class="input-row">
           <label for="ddd">DDD:</label>
-          <input type="text">
+          <input v-model="enderecoJsonSave.ddd" type="text">
         </div>
         <div class="input-row">
           <label for="siafi">siafi:</label>
-          <input type="text">
+          <input v-model="enderecoJsonSave.siafi" type="text">
         </div>
-        <div class="input-row">
-          <div class="input-columns"></div>
-          <input type="text">
-        </div>
+
       </div>
-      <button class="close-button" @click="fecharModal">Fechar</button>
+      <div class="butons">
+        <button class="close-button" @click="fecharModal">Fechar</button>
+        <button class="save-button" @click="save()">Salvar</button>
+      </div>
     </div>
   </div>
+
+  <ErrorModal :show-modal="showErrorModal" :error-message="errorMessage" @fechar-modal="fecharErroModal" />
 </template>
 
 <script>
+import ErrorModal from './ErrorModal.vue';
 export default {
   name: 'EnderecoModal',
+  components: {
+    ErrorModal
+  },
   props: {
     showModal: Boolean,
     enderecoJson: Object,
-    endereco: Object
+    endereco: Object,
   },
+
   methods: {
     fecharModal() {
       this.$emit('fechar-modal');
     },
     atualizarValor(chave, valor) {
       this.$emit('atualizar-valor', chave, valor);
+    },
+    save() {
+      if (!this.enderecoJsonSave.cep || !this.enderecoJsonSave.logradouro) {
+        this.showErrorModal = true;
+        this.errorMessage = 'CEP e logradouro nulo. Favor preencher';
+        return;
+      }
+    },
+    fecharErroModal() {
+      this.showErrorModal = false;
+      this.errorMessage = null;
+    }
+  },
+  data() {
+    return {
+      enderecoJsonSave: {
+        cep: '',
+        logradouro: '',
+        complemento: '',
+        bairro: '',
+        localidade: '',
+        uf: '',
+        ibge: '',
+        gia: '',
+        ddd: '',
+        siafi: '',
+      },
+      showErrorModal: false,
+      errorMessage: ''
     }
   }
+
 };
 </script>
 <style>

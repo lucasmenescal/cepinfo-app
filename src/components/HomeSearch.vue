@@ -2,37 +2,56 @@
   <div class="home">
     <label for="home-search"></label>
     <input v-model="enderecoValue" class="home-search" type="text">
-    <button class="home-button" @click="toggleModal">Pesquisar</button>
+    <div class="buttons">
+      <button class="home-button" @click="toggleModal(false)">Pesquisar</button>
+      <button class="home-button" @click="toggleModal(true)">Novo</button>
+    </div>
   </div>
+  <ErrorModal :show-modal="showErrorModal" :error-message="errorMessage" @fechar-modal="fecharErroModal" />
 
-  <EnderecoModal :show-modal="showModal" :endereco-json="enderecoJson" @fechar-modal="fecharModal" />
-
+  <EnderecoModal :show-modal="showModal" :endereco-json="enderecoJson" @fechar-modal="fecharEnderecoModal" />
 </template>
 
 <script>
 import EnderecoModal from './EnderecoModal.vue';
+import ErrorModal from './ErrorModal.vue';
+
 export default {
   name: 'HomeSearch',
   components: {
-    EnderecoModal
+    EnderecoModal,
+    ErrorModal
   },
   data() {
     return {
       enderecoValue: '',
       enderecoJson: {},
-      showModal: false
+      showModal: false,
+      showErrorModal: false,
+      errorMessage: ''
     };
   },
   methods: {
-    toggleModal() {
+    toggleModal(isNew) {
+      if (isNew) {
+        this.enderecoValue = null;
+        this.enderecoJson = null;
+      }
+      if (!isNew && !this.enderecoValue) {
+        this.showErrorModal = true;
+        this.errorMessage = 'Por favor, insira um endereço válido.';
+        return;
+      }
       this.showModal = !this.showModal;
       if (this.showModal) {
-        this.buscarEndereco();
+        if (!isNew) {
+          this.buscarEndereco();
+        }
       }
     },
     buscarEndereco() {
       const url = `http://localhost:8000/enderecos/buscar/${this.enderecoValue}`;
-      
+
       fetch(url)
         .then(response => response.json())
         .then(data => {
@@ -42,8 +61,13 @@ export default {
           console.error('Erro na requisição:', error);
         });
     },
-    fecharModal() {
+    fecharEnderecoModal() {
       this.showModal = false;
+      this.enderecoValue = null;
+    },
+    fecharErroModal() {
+      this.showErrorModal = false;
+      this.enderecoValue = null;
     }
   }
 };
@@ -58,7 +82,7 @@ export default {
   justify-content: center;
 }
 
-.home-search{
+.home-search {
   border-radius: 10px;
 }
 
@@ -68,5 +92,4 @@ export default {
   font-size: 20px;
   margin: 10px;
 }
-
 </style>

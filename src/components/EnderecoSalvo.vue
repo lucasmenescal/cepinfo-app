@@ -29,7 +29,6 @@ export default {
   },
   methods: {
     toggleModal(endereco) {
-      console.log(endereco)
       this.enderecoSelecionado = endereco;
       this.showModal = !this.showModal;
     },

@@ -90,7 +90,7 @@
       </div>
       <div class="butons">
         <button class="close-button" @click="fecharModal">Fechar</button>
-        <button class="save-button" @click="save()">Salvar</button>
+        <button v-if="!enderecoJson" class="save-button" @click="save()">Salvar</button>
       </div>
     </div>
   </div>
@@ -110,6 +110,7 @@ export default {
     enderecoJson: Object,
     endereco: Object,
   },
+  emits: ['fechar-modal'],
 
   methods: {
     fecharModal() {
@@ -173,8 +174,10 @@ export default {
   text-align: center;
 }
 
-.close-button {
+.close-button,
+.save-button {
   padding: 5px 10px;
+  margin: 10px;
   font-size: 16px;
   border: none;
   background-color: #ddd;

@@ -100,10 +100,9 @@ export default {
     fecharModais() {
       this.$emit('fechar-modal');
       this.$emit('fechar-modais');
+      location.reload();
     },
     fecharEditarModal() {
-      // this.enderecoJsonSave = null;
-      this.limparInputs();
       this.$emit('fechar-modal');
     },
     atualizarValor(chave, valor) {

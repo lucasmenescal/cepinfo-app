@@ -215,12 +215,10 @@ export default {
 
 @media screen and (max-width: 415px) {
 
-  /* Max-width para iPhone XR */
   .butons {
     font-size: 10px;
-    /* Tamanho menor para telas menores */
-    padding: 5px;
-    margin: 5px;
+    padding: 2px;
+    margin: 2px;
   }
 
   .input-container {

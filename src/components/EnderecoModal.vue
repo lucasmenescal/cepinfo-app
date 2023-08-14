@@ -90,14 +90,14 @@
       </div>
       <div class="butons">
         <button v-if="!enderecoJson" class="save-button" @click="save()">Salvar</button>
-        <button class="close-button" @click="fecharModal">Cancelar</button>
+        <button class="close-button" @click="fecharModais">Cancelar</button>
+        <MessageModal :show-modal="showMessageModal" :message="message" @fechar-modais="fecharModais" />
+        <ErrorModal :show-modal="showErrorModal" :error-message="errorMessage" @fechar-modal="fecharErroModal" />
       </div>
     </div>
   </div>
 
-  <MessageModal :show-modal="showMessageModal" :message="message" @fechar-modal="fecharMessageModal" />
 
-  <ErrorModal :show-modal="showErrorModal" :error-message="errorMessage" @fechar-modal="fecharErroModal" />
 </template>
 
 <script>
@@ -115,13 +115,17 @@ export default {
     enderecoJson: Object,
     endereco: Object,
   },
-  emits: ['fechar-modal'],
+  emits: ['fechar-modal', 'fechar-modais'],
 
   methods: {
+    fecharModais(){
+      this.$emit('fechar-modal');
+      this.$emit('fechar-modais');
+    },
     fecharModal() {
       // this.enderecoJsonSave = null;
       this.limparInputs();
-      this.$emit('fechar-modal');
+      // this.$emit('fechar-modal');
     },
     atualizarValor(chave, valor) {
       this.$emit('atualizar-valor', chave, valor);

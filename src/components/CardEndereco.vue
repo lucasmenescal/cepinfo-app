@@ -5,27 +5,41 @@
       <p>{{ endereco.logradouro }}</p>
     </div>
     <div class="butons">
-      <button class="edit-button" @click="toggleModal">Editar</button>
+      <button class="edit-button" @click="editarModal">Editar</button>
       <button class="delete-button" @click="openYesNoModal">Deletar</button>
     </div>
     <YesNoModal :showModal="showYesNoModal" :enderecoCep="endereco.cep" @fechar-modal="fecharYesNoModal" />
+
+    <EditarEnderecoModal :show-modal="showEditarModal" :endereco-json="endereco" @fechar-modal="fecharEditarModal" />
   </div>
 </template>
 <script>
 import YesNoModal from './messages/ModalYesNo.vue';
+import EditarEnderecoModal from './EditarEnderecoModal.vue';
 export default {
   components: {
     YesNoModal,
+    EditarEnderecoModal
   },
   data() {
     return {
       showYesNoModal: false,
+      showEditarModal: false
     }
   },
   props: {
     endereco: Object
   },
   methods: {
+    fecharModais(){
+      this.fecharEditarModal();
+    },
+    editarModal() {
+      this.showEditarModal = true;
+    },
+    fecharEditarModal() {
+      this.showEditarModal = false;
+    },
     fecharYesNoModal() {
       this.showYesNoModal = false;
     },

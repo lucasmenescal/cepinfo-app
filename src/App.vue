@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <AppHeader @page-change="changePage" />
+    <AppHeader class="header" @page-change="changePage" />
     <div>
       <Home v-if="currentPageComponent === 'HomeSearch'"/>
       <Enderecos v-if="currentPageComponent === 'EnderecoSalvo'"/>
@@ -49,12 +49,23 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+
 }
 
-header {
+.header {
   padding: 0;
   margin: 0;
   display: flex;
   flex-direction: row;
   justify-content: right;
-}</style>
+
+  font-size: 30px;
+
+}
+
+@media screen and (max-width: 415) {
+  .header{
+    font-size: 20px;
+  }
+}
+</style>

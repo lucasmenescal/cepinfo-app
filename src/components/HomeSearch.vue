@@ -4,7 +4,7 @@
     <input v-model="enderecoValue" class="home-search" type="text">
     <div class="buttons">
       <button class="home-button" @click="toggleModal(false)">Pesquisar</button>
-      <button class="home-button" @click="toggleModal(true)">Novo</button>
+      <button class="home-button" @click="toggleModal(true)">Novo Endereço</button>
     </div>
   </div>
   <ErrorModal :show-modal="showErrorModal" :error-message="errorMessage" @fechar-modal="fecharErroModal" />
@@ -14,7 +14,7 @@
 
 <script>
 import EnderecoModal from './EnderecoModal.vue';
-import ErrorModal from './ErrorModal.vue';
+import ErrorModal from './messages/ErrorModal.vue';
 
 export default {
   name: 'HomeSearch',
@@ -91,5 +91,9 @@ export default {
   padding: 10px;
   font-size: 20px;
   margin: 10px;
+}
+
+@media screen and (max-width: 415) {
+
 }
 </style>

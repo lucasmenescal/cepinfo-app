@@ -89,21 +89,26 @@
 
       </div>
       <div class="butons">
-        <button class="close-button" @click="fecharModal">Fechar</button>
         <button v-if="!enderecoJson" class="save-button" @click="save()">Salvar</button>
+        <button class="close-button" @click="fecharModal">Cancelar</button>
       </div>
     </div>
   </div>
+
+  <MessageModal :show-modal="showMessageModal" :message="message" @fechar-modal="fecharMessageModal" />
 
   <ErrorModal :show-modal="showErrorModal" :error-message="errorMessage" @fechar-modal="fecharErroModal" />
 </template>
 
 <script>
-import ErrorModal from './ErrorModal.vue';
+import ErrorModal from './messages/ErrorModal.vue';
+import MessageModal from './messages/MessageModal.vue';
+
 export default {
   name: 'EnderecoModal',
   components: {
-    ErrorModal
+    ErrorModal,
+    MessageModal
   },
   props: {
     showModal: Boolean,
@@ -114,6 +119,8 @@ export default {
 
   methods: {
     fecharModal() {
+      // this.enderecoJsonSave = null;
+      this.limparInputs();
       this.$emit('fechar-modal');
     },
     atualizarValor(chave, valor) {
@@ -125,10 +132,52 @@ export default {
         this.errorMessage = 'CEP e logradouro nulo. Favor preencher';
         return;
       }
+
+      const url = 'http://localhost:8000/enderecos/save';
+
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(this.enderecoJsonSave)
+      })
+        .then(response => {
+          if (response.status === 201) {
+            this.showMessageModal = true;
+            this.message = "Endereço salvo com sucesso!";
+          } else if (!response.ok) {
+            throw new Error(response.statusText);
+          }
+          return response.json();
+        })
+        .catch(error => {
+          console.error('Erro ao salvar endereço:', error);
+          this.showErrorModal = true;
+          this.errorMessage = 'Erro ao salvar endereço!';
+        });
+      this.limparInputs();
+
     },
     fecharErroModal() {
       this.showErrorModal = false;
       this.errorMessage = null;
+    },
+    fecharMessageModal() {
+      this.showMessageModal = false;
+      this.message = null;
+    },
+    limparInputs() {
+      this.enderecoJsonSave.cep = ''
+      this.enderecoJsonSave.logradouro = ''
+      this.enderecoJsonSave.complemento = ''
+      this.enderecoJsonSave.bairro = ''
+      this.enderecoJsonSave.localidade = ''
+      this.enderecoJsonSave.uf = ''
+      this.enderecoJsonSave.ibge = ''
+      this.enderecoJsonSave.gia = ''
+      this.enderecoJsonSave.ddd = ''
+      this.enderecoJsonSave.siafi = ''
     }
   },
   data() {
@@ -143,10 +192,12 @@ export default {
         ibge: '',
         gia: '',
         ddd: '',
-        siafi: '',
+        siafi: ''
       },
       showErrorModal: false,
-      errorMessage: ''
+      errorMessage: '',
+      message: '',
+      showMessageModal: false
     }
   }
 
@@ -176,10 +227,10 @@ export default {
 
 .close-button,
 .save-button {
-  padding: 5px 10px;
+  padding: 10px 5px;
+  font-size: 20px;
   margin: 10px;
-  font-size: 16px;
-  border: none;
+  border: 1px solid black;
   background-color: #ddd;
   border-radius: 5px;
   cursor: pointer;
@@ -209,4 +260,40 @@ export default {
   font-size: 12px;
   width: 100%;
 }
-</style>
+
+
+@media screen and (max-width: 415px) {
+
+  /* Max-width para iPhone XR */
+  .butons {
+    font-size: 10px;
+    /* Tamanho menor para telas menores */
+    padding: 5px;
+    margin: 5px;
+  }
+
+  .input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .input-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .input-row label {
+    margin-right: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    flex-shrink: 0;
+  }
+
+  .input-row input {
+    padding: 4px;
+    font-size: 15px;
+    width: 100%;
+  }
+}</style>

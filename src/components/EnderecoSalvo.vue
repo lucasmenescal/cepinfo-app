@@ -2,7 +2,7 @@
   <div>
     <h1>Endereços Salvos</h1>
     <div>
-      <CardEndereco v-for="(endereco, index) in enderecos" :key="index" :endereco="endereco" @click="toggleModal(endereco)" />
+      <CardEndereco v-for="(endereco, index) in enderecos" :key="index" :endereco="endereco" />
     </div>
     <EnderecoModal :show-modal="showModal" :endereco-json="enderecoSelecionado" @fechar-modal="fecharModal" />
   </div>
@@ -28,10 +28,6 @@ export default {
     this.fetchEnderecos();
   },
   methods: {
-    toggleModal(endereco) {
-      this.enderecoSelecionado = endereco;
-      this.showModal = !this.showModal;
-    },
     fetchEnderecos() {
       fetch('http://localhost:8000/enderecos/listarTudo')
         .then(response => response.json())

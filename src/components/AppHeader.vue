@@ -27,7 +27,8 @@ export default {
 
 <style scoped>
 header {
-  padding: 1rem;
+  padding: 0;
+  margin: 0;
   text-align: right;
   background-color: #34495E;
 }
@@ -51,11 +52,21 @@ li:hover{
 .header-home,
 .header-enderecos {
   text-decoration: none;
-  padding: 20px;
+  padding: 5px 10px;
   text-align: right;
   color: white;
   font-weight: 500;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+@media screen and (max-width: 415px) {
+  header{
+    display: flex;
+    margin: 0;
+
+    font-size: 20px;
+  }
+  
 }
 
 </style>

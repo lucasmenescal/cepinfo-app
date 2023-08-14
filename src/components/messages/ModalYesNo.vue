@@ -50,6 +50,7 @@ export default {
     fecharModais() {
       this.fecharModalYesNo();
       this.$emit('fechar-modais');
+      window.location.reload();
     },
     fecharModalYesNo() {
       this.$emit('fechar-modal');

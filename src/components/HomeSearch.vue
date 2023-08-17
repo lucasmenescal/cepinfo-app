@@ -36,6 +36,7 @@ export default {
       if (isNew) {
         this.enderecoValue = null;
         this.enderecoJson = null;
+        this.enderecoJsonSave = null;
       }
       if (!isNew && !this.enderecoValue) {
         this.showErrorModal = true;
@@ -68,6 +69,18 @@ export default {
     fecharErroModal() {
       this.showErrorModal = false;
       this.enderecoValue = null;
+    },
+    limparInputs() {
+      this.enderecoJsonSave.cep = ''
+      this.enderecoJsonSave.logradouro = ''
+      this.enderecoJsonSave.complemento = ''
+      this.enderecoJsonSave.bairro = ''
+      this.enderecoJsonSave.localidade = ''
+      this.enderecoJsonSave.uf = ''
+      this.enderecoJsonSave.ibge = ''
+      this.enderecoJsonSave.gia = ''
+      this.enderecoJsonSave.ddd = ''
+      this.enderecoJsonSave.siafi = ''
     }
   }
 };
@@ -93,7 +106,5 @@ export default {
   margin: 10px;
 }
 
-@media screen and (max-width: 415) {
-
-}
+@media screen and (max-width: 415) {}
 </style>

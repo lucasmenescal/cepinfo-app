@@ -1,58 +1,15 @@
 <template>
-  <div class="modal-overlay" v-show="showModal">
+  <div class="modal-overlay" v-if="showModal">
     <div class="modal">
       <h2>Endereço</h2>
-      <div v-if="enderecoJson" class="input-container">
+      <div class="input-container">
         <div class="input-row">
           <label for="cep">CEP:</label>
-          <input :value="enderecoJson.cep" type="text">
+          <input v-model="enderecoJsonSave.cep" type="text">
         </div>
         <div class="input-row">
           <label for="logradouro">Logradouro:</label>
-          <input :value="enderecoJson.logradouro" type="text">
-        </div>
-        <div class="input-row">
-          <label for="complemento">Complemento:</label>
-          <input :value="enderecoJson.complemento" type="text">
-        </div>
-        <div class="input-row">
-          <label for="bairro">Bairro:</label>
-          <input :value="enderecoJson.bairro" type="text">
-        </div>
-        <div class="input-row">
-          <label for="localidade">Localidade:</label>
-          <input :value="enderecoJson.localidade" type="text">
-        </div>
-        <div class="input-row">
-          <label for="uf">UF:</label>
-          <input :value="enderecoJson.uf" type="text">
-        </div>
-        <div class="input-row">
-          <label for="ibge">IBGE:</label>
-          <input :value="enderecoJson.ibge" type="text">
-        </div>
-        <div class="input-row">
-          <label for="gia">GIA:</label>
-          <input :value="enderecoJson.gia" type="text">
-        </div>
-        <div class="input-row">
-          <label for="ddd">DDD:</label>
-          <input :value="enderecoJson.ddd" type="text">
-        </div>
-        <div class="input-row">
-          <label for="siafi">siafi:</label>
-          <input :value="enderecoJson.siafi" type="text">
-        </div>
-
-      </div>
-      <div v-else class="input-container">
-        <div class="input-row">
-          <label for="cep">CEP:</label>
-          <input v-model="enderecoJsonSave.cep" type="text" required>
-        </div>
-        <div class="input-row">
-          <label for="logradouro">Logradouro:</label>
-          <input v-model="enderecoJsonSave.logradouro" type="text" required>
+          <input v-model="enderecoJsonSave.logradouro" type="text">
         </div>
         <div class="input-row">
           <label for="complemento">Complemento:</label>
@@ -86,7 +43,6 @@
           <label for="siafi">siafi:</label>
           <input v-model="enderecoJsonSave.siafi" type="text">
         </div>
-
       </div>
       <div class="butons">
         <button v-if="!enderecoJson" class="save-button" @click="save()">Salvar</button>
@@ -96,8 +52,6 @@
       </div>
     </div>
   </div>
-
-
 </template>
 
 <script>
@@ -106,6 +60,16 @@ import MessageModal from './messages/MessageModal.vue';
 
 export default {
   name: 'EnderecoModal',
+  watch: {
+    enderecoJson: {
+      immediate: true,
+      handler(novoEndereco) {
+        if (novoEndereco) {
+          this.enderecoJsonSave = { ...novoEndereco };
+        }
+      },
+    },
+  },
   components: {
     ErrorModal,
     MessageModal
@@ -118,12 +82,13 @@ export default {
   emits: ['fechar-modal', 'fechar-modais'],
 
   methods: {
-    fecharModais(){
+    fecharModais() {
+      this.limparInputs();
       this.$emit('fechar-modal');
       this.$emit('fechar-modais');
     },
     fecharModal() {
-      // this.enderecoJsonSave = null;
+      // this.enderecoJson = null;
       this.limparInputs();
       // this.$emit('fechar-modal');
     },
@@ -229,8 +194,18 @@ export default {
   text-align: center;
 }
 
-.close-button,
-.save-button {
+.butons .close-button {
+  padding: 10px 5px;
+  font-size: 20px;
+  margin: 10px;
+  border: 1px solid black;
+  background-color: #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+
+}
+
+.butons .save-button {
   padding: 10px 5px;
   font-size: 20px;
   margin: 10px;
@@ -298,4 +273,5 @@ export default {
     font-size: 15px;
     width: 100%;
   }
-}</style>
+}
+</style>

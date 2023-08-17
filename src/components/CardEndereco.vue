@@ -10,16 +10,16 @@
     </div>
     <YesNoModal :showModal="showYesNoModal" :enderecoCep="endereco.cep" @fechar-modal="fecharYesNoModal" />
 
-    <EditarEnderecoModal :show-modal="showEditarModal" :endereco-json="endereco" @fechar-modal="fecharEditarModal" />
+    <EnderecoModal :show-modal="showEditarModal" :endereco-json="endereco" @fechar-modal="fecharEditarModal" />
   </div>
 </template>
 <script>
 import YesNoModal from './messages/ModalYesNo.vue';
-import EditarEnderecoModal from './EditarEnderecoModal.vue';
+import EnderecoModal from './EnderecoModal.vue';
 export default {
   components: {
     YesNoModal,
-    EditarEnderecoModal
+    EnderecoModal
   },
   data() {
     return {
